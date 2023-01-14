@@ -1,0 +1,55 @@
+#################################################
+#     ______  _____   _   _  ______   _____     #
+#    |___  / /  ___| | | | | | ___ \ /  __ \    #
+#       / /  \ `--.  | |_| | | |_/ / | /  \/    #
+#      / /    `--. \ |  _  | |    /  | |        #
+#    ./ /___ /\__/ / | | | | | |\ \  | \__/\    #
+#    \_____/ \____/  \_| |_/ \_| \_|  \____/    #
+#                                               #
+#   •---------------------------------------•   #
+#   |                 utsuro                |   #
+#   |            (DietPi) - v0.1            |   #
+#   |      (i): ZSH Configuration File      |   #
+#   •---------------------------------------•   #
+#                                               #
+#################################################
+
+export ZCFG="${ZCFG:-$HOME/.config/zsh}"
+
+# EXTERNAL SOURCES
+source $ZCFG/src.zsh
+#FUNCTIONS
+source $ZCFG/func.zsh
+# PATHS
+source $ZCFG/paths.zsh
+# ENVS
+source $ZCFG/envs.zsh
+# ALIASES
+source $ZCFG/alias.zsh
+# PROMPT
+eval "$(starship init zsh)"
+
+###################
+#                 #
+#   ZSH PLUGINS   #
+#                 #
+###################
+# REPOSITORY - Simply add plugin. Will be installed in $ZPLUGINDIR
+repos=(
+  # Plugins loaded first
+  #  sindresorhus/pure
+
+  # Supa Speed Loading (if plugin trouble put above)
+  romkatv/zsh-defer
+
+  # Other plugins
+  zsh-users/zsh-completions
+
+  # Plugins loaded last
+  zsh-users/zsh-syntax-highlighting
+  zsh-users/zsh-history-substring-search
+  zsh-users/zsh-autosuggestions
+)
+
+# Enable all plugins.
+plugin-load $repos

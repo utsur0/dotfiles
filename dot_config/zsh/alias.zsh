@@ -1,0 +1,77 @@
+#################################
+#                               #
+#                               #
+#           ALIAS FILE          #
+#                               #
+#                               #
+#################################
+#1] General
+alias vi='nvim'
+alias vim='nvim'
+alias l='exa -lah'
+alias ls='exa -l'
+alias rl='source ~/.zshrc'
+alias zcfg='nvim ~/.zshrc'
+alias cht='cht.sh'
+alias less='less -R'
+
+#2] LS Aliases (exa dependent)
+alias ls='exa'
+alias l='exa -l --all --group-directories-first --git'
+alias ll='exa -l --all --all --group-directories-first --git'
+alias lt='exa -T --git-ignore --level=2 --group-directories-first'
+alias llt='exa -lT --git-ignore --level=2 --group-directories-first'
+alias lT='exa -T --git-ignore --level=4 --group-directories-first'
+
+#3] Password Manager Aliases
+# NOTE: If you don't use these feel free to uncomment. BWSSH is sourced
+#       from this repo: https://github.com/joaojacome/bitwarden-ssh-agent
+#       Stored in the conventional ~/.local/bin for local scripts/cmds.
+#
+    #[-] KeePass Aliases
+        alias kp='keepassxc'
+        alias kpc='keepassxc-cli'
+    #[-] Bitwarden Aliases (bw-cli needed!)
+        alias bwssh='SSH_ASKPASS_REQUIRE=force python3 ~/.local/bin/bwssh.py'
+
+
+#####################
+#                   #
+#    OS Specific    #
+#                   #
+#####################
+
+# USAGE: Comment/uncomment as necessary/to avoid errors.
+#        Doing this and using one file is easier with chezmoi. 
+
+# DEBIAN / UBUNTU 
+# (commands requiring sudo should be followed using `sudo !!`)
+# APT Aliases
+    #[-] Install
+        alias apti='apt install'
+        alias install='apt install'
+    #[-] Removal
+        alias aptrm='apt remove'
+        alias uninst='apt remove'
+        alias rmpkg='apt remove'
+        alias purge='apt purge'
+    #[-] Search
+        alias remove='apt remove'
+        alias findpkg='apt search'
+    
+
+    #[-] Custom Program Aliases
+
+# MacOS 
+##] iOS Aliases (TODO: idevice commands!)
+#    #[-] Jailbreak Related 
+#        alias chra1n='/Applications/iOS/checkra1n.app/Contents/MacOS/checkra1n'
+#
+##] Homebrew 
+#        alias ibrew="arch -x86_64 /usr/local/bin/brew"
+#        alias brew="/opt/homebrew/bin/brew"
+#
+##] Packwiz Aliases (Minecraft Modpack Creator Tool)
+#        alias pw='packwiz'
+#        alias rmd='packwiz remove'
+#        alias exmd='packwiz cf export'
