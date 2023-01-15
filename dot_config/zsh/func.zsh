@@ -19,14 +19,77 @@
 #  fi
 #}
 
-###########################################################
-# PLUGIN MANAGER (or lack theirof)                        #
-# zsh_unplugged: https://github.com/mattmc3/zsh_unplugged #
-# a simple, ultra-fast plugin handler                     #
-###########################################################
+#############################################################
+#                   zcfg - ZSH EDIT FUNC                    #
+#############################################################
+# Simple function to quickly edit ZSH Settings.
+function zcfg (){
+    __usage="
+    Usage: zcfg [r] [OPTIONS]
+
+    Mode Flags:
+      {NONE}    Operates on current ZSH cofiguration
+      r         Operates on Remote Chezmoi Managed ZSH configuration. 
+
+    Arguments:
+      -h,       Display Usage Information
+
+      {NONE}    Opens Main .zshrc
+      -a,       Opens Aliases
+      -e,       Opens Enviorment Variables
+      -f,       Opens Functions
+      -p,       Opens Paths
+      -s,       Opens External Scripts
+    "
+    # Dirty Mode Switch
+    _opener="$EDITOR"
+    _arg="$1"
+    if [[ "$1" == 'r' ]]; then
+        _opener="chezmoi edit"
+        _arg="$2"
+    fi
+
+    case $_arg in
+
+        "-a")
+            eval $_opener $ZCFG/alias.zsh
+            ;;
+
+        "-e")
+            eval $_opener $ZCFG/envs.zsh
+            ;;
+
+        "-f")
+            eval $_opener $ZCFG/func.zsh
+            ;;
+
+        "-p")
+            eval $_opener $ZCFG/paths.zsh
+            ;;
+
+        "-s")
+            eval $_opener $ZCFG/src.zsh
+            ;;
+
+        "-h" | "--help")
+            echo "$__usage" 
+            ;;
+
+        *)
+            eval $_opener $HOME/.zshrc
+            ;;
+    esac
+}
+
+
+#############################################################
+# PLUGIN MANAGER (or lack theirof)                          #
+# zsh_unplugged: https://github.com/mattmc3/zsh_unplugged   #
+# a simple, ultra-fast plugin handler                       #
+#############################################################
 function plugin-load {
   local repo plugdir initfile
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZCFG:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
     plugdir=$ZPLUGINDIR/${repo:t}
     initfile=$plugdir/${repo:t}.plugin.zsh
@@ -56,7 +119,7 @@ function plugin-update {
 #Simple plugin-clone function, you must source plugins yourself!
 function plugin-clone {
   local repo plugdir initfile
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+  ZPLUGINDIR=${ZPLUGINDIR:-${ZCFG:-$HOME/.config/zsh}/plugins}
   for repo in $@; do
     plugdir=$ZPLUGINDIR/${repo:t}
     initfile=$plugdir/${repo:t}.plugin.zsh
@@ -74,7 +137,7 @@ function plugin-clone {
 # Use to source as separate process.
 function plugin-source {
   local plugdir
-  ZPLUGINDIR=${ZPLUGINDIR:-${ZDOTDIR:-$HOME/.config/zsh}/plugins}
+  ZPLUGINDIR=${ZPLUGINDIR:-${$ZCFG:-$HOME/.config/zsh}/plugins}
   for plugdir in $@; do
     [[ $plugdir = /* ]] || plugdir=$ZPLUGINDIR/$plugdir
     fpath+=$plugdir
@@ -82,7 +145,7 @@ function plugin-source {
     (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
   done
 }
-###########################################################
+#############################################################
 
 
 #1] General
@@ -95,7 +158,7 @@ function cht (){
 	curl  cheat.sh/"$1"
 }
 
-# LFCD 
+# LFCD (Dependent on: lf) 
 # Change directory when exiting LF
 # LF is a file browser for terminal.
 # Just use it. Trust me.
@@ -138,37 +201,39 @@ fi
 
 #3] Custom Programs 
 
+# MacOS
 # Colorized TCPDump. Require nasty perl and usage of its dumb modules.
 # Requires "ip" command – Not found on MacOS by default.
 # TODO: USE https://github.com/jhunt/tcptrace which doesnt need perl modules.
-function tcpd(){
-    if [ $# -ne 1 ]; then
-        echo "Usage: tcpd <port>"
-    else
-        sudo tcpdump -ln port $1 | ~/.local/share/bin/tcpd-color.pl
-    fi
-}
+#function tcpd(){
+#    if [ $# -ne 1 ]; then
+#        echo "Usage: tcpd <port>"
+#    else
+#        sudo tcpdump -ln port $1 | ~/.local/share/bin/tcpd-color.pl
+#    fi
+#}
 
+# MacOS
 # PUPFlare - 
 # A headless Chrome browser allowing commands like CURL to query
 # the full DOM with loaded Javascript. Good for CloudFlare bypass, etc.
 # NOTE: PUPFlare Installed in: ~/.local/share/pupflare
 # NOTE: FIXED FOR MacOS COMPATABILITY! Commands may need adjusted.
-function pf (){
-	pid=$(lsof -iTCP -sTCP:LISTEN -n -P | grep ":3000" | awk '{print $2}')
-	if [[ $1 == "-k" ]]; then
-		kill -9 "$pid"
-	elif [[ $pid == "" ]]; then 
-		echo "[@] API Handlder Not Started!"
-		echo "[!] Starting API Handlder..."
-		pushd $PWD > /dev/null 2>1&
-		cd ~/.local/share/pupflare/
-		npm start &
-		sleep 5
-		popd > /dev/null 2>1&
-		echo "[@] Use http://localhost:3000/?url= to send requests!" 
-	else
-		echo "[@] API Handlder Already Started!"
-		echo "[@] Use http://localhost:3000/?url= to send requests!" 
-	fi 
-}
+#function pf (){
+#	pid=$(lsof -iTCP -sTCP:LISTEN -n -P | grep ":3000" | awk '{print $2}')
+#	if [[ $1 == "-k" ]]; then
+#		kill -9 "$pid"
+#	elif [[ $pid == "" ]]; then 
+#		echo "[@] API Handlder Not Started!"
+#		echo "[!] Starting API Handlder..."
+#		pushd $PWD > /dev/null 2>1&
+#		cd ~/.local/share/pupflare/
+#		npm start &
+#		sleep 5
+#		popd > /dev/null 2>1&
+#		echo "[@] Use http://localhost:3000/?url= to send requests!" 
+#	else
+#		echo "[@] API Handlder Already Started!"
+#		echo "[@] Use http://localhost:3000/?url= to send requests!" 
+#	fi 
+#}

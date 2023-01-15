@@ -7,6 +7,7 @@
 #################################
 #1] General 
     export ZPLUGINDIR="${ZPLUGINDIR:-$ZCFG/plugins}"
+    export CHEZDIR="$HOME/.local/share/chezmoi/"
     export LANG=en_US.UTF-8
 
 # Starship ZSH Prompt
@@ -14,6 +15,8 @@
 
 # Git more info
     export GITSTATUS_LOG_LEVEL=DEBUG
+
+# Chezmoi Dotfiles Location
 
 #2] Custom Programs
 
