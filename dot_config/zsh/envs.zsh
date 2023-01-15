@@ -9,6 +9,7 @@
     export ZPLUGINDIR="${ZPLUGINDIR:-$ZCFG/plugins}"
     export CHEZDIR="$HOME/.local/share/chezmoi/"
     export LANG=en_US.UTF-8
+    export EDITOR=$(which nvim)
 
 # Starship ZSH Prompt
     export STARSHIP_CONFIG=~/.config/starship/starship.toml
@@ -29,13 +30,8 @@
 #####################
 #
 # Linux (Universal)
-#    #[-] Editor
-#        export EDITOR='/snap/bin/nvim'
 
 # MacOS
-#    #[-] Editor
-#        export EDITOR='/opt/homebrew/bin/nvim'
-#
 #    #[-] NODE TRUST STORE OS Location
 #        export NODE_OPTIONS="--use-openssl-ca"
 #        export NODE_EXTRA_CA_CERTS="/Users/winter/Documents/Records/Certificates/RootCA/MCP-CA(Root).crt"
